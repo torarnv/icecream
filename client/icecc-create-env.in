@@ -409,11 +409,11 @@ if test -n "$clang"; then
         | awk '/#include .*? search starts here:$/{inc=1;next}/End of search list\./{inc=0}inc')
     if test -z "$clang_internal_include_paths"; then
         echo $added_clang cannot find internal include paths
-        exit 1
+    else
+      for file in $(find $clang_internal_include_paths -type f); do
+        add_file "$file"
+      done
     fi
-    for file in $(find $clang_internal_include_paths -type f); do
-      add_file "$file"
-    done
 fi
 
 # Do not do any prefix stripping on extra files, they (e.g. clang plugins) are usually
